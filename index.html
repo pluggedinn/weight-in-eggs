@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Egg Weight Calculator</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+        h1 {
+            color: #e67e22;
+            margin-bottom: 1rem;
+        }
+        .input-group {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 0.5rem 0;
+        }
+        .input-group label {
+            flex: 1;
+            text-align: right;
+            margin-right: 0.5rem;
+        }
+        input {
+            flex: 2;
+            padding: 0.5rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #e67e22;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 1rem;
+        }
+        button:hover {
+            background-color: #d35400;
+        }
+        #result {
+            margin-top: 1rem;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        .egg-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        .toggle-switch {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="egg-icon">🥚</div>
+        <h1>Egg Weight Calculator</h1>
+        <div class="toggle-switch">
+            <label for="unit">kg</label>
+            <input type="checkbox" id="unit" onchange="toggleUnit()">
+            <label for="unit">lbs</label>
+        </div>
+        <div class="input-group">
+            <label for="weight">Weight:</label>
+            <input type="number" id="weight" placeholder="Enter weight" step="0.1">
+            <span id="weightUnit">kg</span>
+        </div>
+        <div class="input-group">
+            <label for="eggPrice">Egg price:</label>
+            <input type="number" id="eggPrice" placeholder="Enter egg price" step="0.01" value="7.48">
+            <span>$</span>
+        </div>
+        <button onclick="calculateEggCost()">Calculate</button>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        let isKg = true;
+
+        function toggleUnit() {
+            isKg = !isKg;
+            document.getElementById('weightUnit').textContent = isKg ? 'kg' : 'lbs';
+            document.getElementById('weight').placeholder = `Enter weight (${isKg ? 'kg' : 'lbs'})`;
+        }
+
+        function calculateEggCost() {
+            const weightInput = parseFloat(document.getElementById('weight').value);
+            const eggPrice = parseFloat(document.getElementById('eggPrice').value);
+            const resultElement = document.getElementById('result');
+
+            if (isNaN(weightInput) || isNaN(eggPrice) || weightInput <= 0 || eggPrice <= 0) {
+                resultElement.textContent = "Please enter valid numbers.";
+                return;
+            }
+
+            const weight = isKg ? weightInput : weightInput * 0.453592; // Convert lbs to kg if necessary
+            const eggWeight = 7.48; // Average egg weight in kg
+            const numberOfEggs = weight / eggWeight;
+            const totalCost = numberOfEggs * eggPrice;
+
+            resultElement.textContent = `Your weight in eggs would cost $${totalCost.toFixed(2)}!`;
+        }
+    </script>
+</body>
+</html>
